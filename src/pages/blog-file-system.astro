@@ -1,10 +1,10 @@
 ---
-import { getCollection } from "astro:content";
+import type { ACTION_ERROR_CODES, ACTION_QUERY_PARAMS } from "astro:actions";
+import BlogPost from "../components/BlogPost.astro";
 import { siteConfig } from "../config/site-config";
 import MainLayout from "../layouts/MainLayout.astro";
-import TypedBlogPost from "src/components/TypedBlogPost.astro";
 
-const blogPosts = await getCollection('blog', (post) => post.data.isDraft === false );
+const posts = await Astro.glob('./posts-old/*.{md,mdx}');
 ---
 
 <MainLayout title="Manel's Blog">
@@ -15,21 +15,15 @@ const blogPosts = await getCollection('blog', (post) => post.data.isDraft === fa
 				{ siteConfig.title }
 			</h1>
 
-			<a class="mr-2" href="/blog/1">Blog paginat</a>
-			<a class="mr-2" href="/authors">Llistat d'autors</a>
-			
 			<div class="grid grid-cols-1 gap-8 mt-8 md:mt-16 md:grid-cols-2">
 				{
-					blogPosts.map( post => <TypedBlogPost post={post} />)
+					posts.map( post => <BlogPost {...post} />)
 				}
+				
+				
+
+				
 			</div>
 		</div>
 	</section>
 </MainLayout>
-
-<style>
-	a {
-	  @apply text-blue-500 hover:underline;
-	}
-  
-  </style>
